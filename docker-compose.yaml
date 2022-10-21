@@ -1,0 +1,33 @@
+version: "3.7"
+
+services:
+    demo-crm:
+        container_name: demo-crm
+        image: gcr.io/kubernetes-bootcamp-365905/adam_demo-crm:latest
+        ports:
+          - 80:3000
+        env_file: ./.env.local
+        networks:
+          - db_net
+        restart: always
+        depends_on:
+          - mongo
+    
+    mongo:
+        container_name: mongo
+        env_file: ./.env.local
+        image: mongo
+        ports:
+          - "27017:27017"
+        restart: always
+        volumes:
+          - mongodb_data:/data/db
+        networks:
+              - db_net
+
+networks:
+  db_net:
+    driver: bridge
+
+volumes:
+  mongodb_data:

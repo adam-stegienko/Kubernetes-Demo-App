@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: mongo-config-map
+data:
+  MONGODB_URI: "mongodb://mongo-0.mongodb,mongo-1.mongodb,mongo-2.mongodb:27017"
+  LOG_LEVEL: "info"
+  PERSISTENCE: "true"
