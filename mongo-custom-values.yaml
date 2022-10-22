@@ -6,4 +6,3 @@ persistence:
   enabled: true
 auth:
   enabled: true
-  rootPassword: "password123"
