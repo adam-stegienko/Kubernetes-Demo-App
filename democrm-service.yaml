@@ -9,5 +9,6 @@ spec:
   selector:
     app: demo-crm
   ports:
-  - port: 80
+  - protocol: TCP
+    port: 80
     targetPort: 3000
