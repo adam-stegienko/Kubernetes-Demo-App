@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: news-getter-deployment
+  labels:
+    app: news-getter
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: news-getter
+  template:
+    metadata:
+      labels:
+        app: news-getter
+    spec:
+      containers:
+      - name: news-getter
+        image: gcr.io/kubernetes-bootcamp-365905/adam_news-getter:latest
+        envFrom:
+        - secretRef:
+            name: secret-env
+        

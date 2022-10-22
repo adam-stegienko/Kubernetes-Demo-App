@@ -1,0 +1,5 @@
+# Environmental variable files
+.env*
+
+# Config Map YAML file
+config-map.yaml
