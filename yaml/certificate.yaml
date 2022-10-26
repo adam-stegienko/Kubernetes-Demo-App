@@ -5,7 +5,7 @@ metadata:
   namespace: default
 spec:
   dnsNames:
-    - adam2cowsay.hopto.org
+    - adam-demo.ddns.net
   secretName: demo-crm-tls
   issuerRef:
     name: letsencrypt-cluster-issuer

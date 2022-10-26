@@ -8,10 +8,10 @@
   spec:
     tls:
     - hosts:
-      - adam2cowsay.hopto.org
+      - adam-demo.ddns.net
       secretName: demo-crm-tls
     rules:
-      - host: adam2cowsay.hopto.org
+      - host: adam-demo.ddns.net
         http:
           paths:
           - path: /

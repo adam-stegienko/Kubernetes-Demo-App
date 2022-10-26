@@ -1,5 +1,14 @@
 # Demo CRM Adam Project
 
+## IMPORTANT CHANGE
+
+Now in the new version of the app you can run the whole app from the scratch using just one command:
+
+`./app-init.sh`
+
+App should be accessed on the website: https://adam-demo.ddns.net/
+
+
 ## Instruction on how to run it
 
 #### 1. Run MongoDB from Helm Chart (with customer values file)
@@ -23,6 +32,7 @@ Paste this value into the config map and then encode again. Paste it to the secr
 
 #### 5. Create a secret file with base64-encoded values taken from .env.local file
 
+`kubectl apply -f config-map.yaml`
 `kubectl apply -f secret-env.yaml`
 
 #### 6. Apply the secret values into Demo CRM and News Getter apps' deployment files
@@ -61,7 +71,4 @@ Create a TLS certificate.
 #### 10. Run command to obtain the ingress's public IP address and attach it to your DNS host name.
 
 `kubectl get svc --namespace=ingress-nginx ingress-nginx-controller -ojsonpath='{.status.loadBalancer.ingress[].ip}{"\n"}'`
-
-App should be working on port 443 (HTTPs) now.
-Open https://adam2cowsay.hopto.org to browse it!
 

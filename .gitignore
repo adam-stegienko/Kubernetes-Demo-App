@@ -3,3 +3,4 @@
 
 # Config Map YAML file
 config-map.yaml
+secret*

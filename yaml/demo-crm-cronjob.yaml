@@ -1,0 +1,29 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: mongodb-data-remover
+  namespace: default
+spec:
+  schedule: '@daily'
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+          - name: mongodb-data-remover
+            image: mongo
+            env:
+            - name: USER
+              valueFrom:
+                secretKeyRef:
+                  name: secret-env
+                  key: MONGODB_ROOT_USER
+            - name: PWD
+              valueFrom:
+                secretKeyRef:
+                  name: secret-env
+                  key: MONGODB_ROOT_PASSWORD
+            command: ["/bin/sh","-c"]
+            args:
+            - mongosh --host "mongodb-0.mongodb-headless" --username "$(USER)" -p "$(PWD)" --eval "db.clients.deleteMany( {} )"
+          restartPolicy: OnFailure
