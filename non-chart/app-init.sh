@@ -1,12 +1,12 @@
 #!/bin/bash
 
 # Close and re-initate the Google Cloud cluster if applicable.
-printf "y\n" | gcloud container clusters delete adam-cluster || true
+printf "y\n" | gcloud container clusters delete argo-cd || true
 gcloud container clusters create adam-cluster || true
 
 # Install MongoDB
 helm install mongodb --values mongo-custom-values.yaml bitnami/mongodb
-sleep 200
+sleep 180
 
 # Install RabbitMQ
 helm install rabbitmq bitnami/rabbitmq
@@ -30,7 +30,7 @@ echo -e "\n  MONGODB_URI: mongodb://root:${MONGODB_ROOT_PASSWORD}@mongodb-0.mong
 echo -e "\n  RABBITMQ_URI: amqp://user:${RABBITMQ_PASSWORD}@rabbitmq-0.rabbitmq-headless:5672" >> config-map.yaml
 
 sed -i '/^$/d' config-map.yaml || true
-sleep 3
+sleep 10
 
 # Update secret env with new values
 sed -i '/MONGODB_URI/d' secret-env.yaml || true
@@ -51,24 +51,24 @@ echo -e "\n  MONGODB_URI: $MONGODB_TRIMMED" >> secret-env.yaml
 echo -e "\n  RABBITMQ_URI: $RABBITMQ_TRIMMED" >> secret-env.yaml
 
 sed -i '/^$/d' secret-env.yaml || true
-sleep 3
+sleep 10
  
 kubectl apply -f config-map.yaml
-sleep 5
+sleep 2
 kubectl apply -f secret-env.yaml
-sleep 5
+sleep 2
 kubectl apply -f demo-crm-deployment.yaml
-sleep 5
+sleep 2
 kubectl apply -f demo-crm-service.yaml
-sleep 5
+sleep 2
 kubectl apply -f news-getter-deployment.yaml
-sleep 5
+sleep 2
 
 helm upgrade --install ingress-nginx ingress-nginx \
   --repo https://kubernetes.github.io/ingress-nginx \
   --namespace ingress-nginx --create-namespace
 
-sleep 10
+sleep 5
 helm install \
   cert-manager jetstack/cert-manager \
   --namespace cert-manager \
@@ -76,22 +76,45 @@ helm install \
   --version v1.10.0 \
   --set installCRDs=true
 
-sleep 10
-kubectl apply -f demo-crm-ingress.yaml
 sleep 5
+kubectl apply -f demo-crm-ingress.yaml
+sleep 2
 
 kubectl apply -f cert-issuer-nginx-ingress.yaml
-sleep 5
+sleep 2
 
 kubectl apply -f certificate.yaml
-sleep 5
+sleep 2
 
 kubectl apply -f demo-crm-ingress.yaml
-sleep 5
+sleep 2
 
 PUBLIC_IP=$(kubectl get svc --namespace=ingress-nginx ingress-nginx-controller -ojsonpath='{.status.loadBalancer.ingress[].ip}{"\n"}')
 
 echo -e "Copy and paste the public IP of the app - ${PUBLIC_IP} - in the DNS provider's config and try to curl the page:"
 echo -e "curl -I https://adam-demo.ddns.net"
-sleep 120
+sleep 90
 kubectl apply -f demo-crm-cronjob.yaml
+sleep 2
+
+# # ArgoCD installed in cluster
+# kubectl create namespace argocd || true
+# kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
+# sleep 2
+
+# # ArgoCD CLI added
+# sudo install -m 555 argocd-darwin-amd64 /usr/local/bin/argocd || true
+# rm argocd-darwin-amd64 || true
+
+# # Ingress configuration to be performed here
+# # For the temporary use, the port forwarding approach will be used
+#   # kubectl port-forward svc/argocd-server -n argocd 8080:443 &
+
+# # Logging in
+# export ARGO_INIT_PWD=$(kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d)
+# export ARGOCD_OPTS='--port-forward-namespace argocd'
+
+# argocd login argocd-server
+
+# # After logging in, the init password should be updated using the following command:
+#   # argocd account update-password
