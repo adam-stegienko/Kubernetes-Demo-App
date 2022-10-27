@@ -72,4 +72,3 @@ Create a TLS certificate.
 
 `kubectl get svc --namespace=ingress-nginx ingress-nginx-controller -ojsonpath='{.status.loadBalancer.ingress[].ip}{"\n"}'`
 
-# argo-app

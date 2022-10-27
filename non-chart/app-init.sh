@@ -6,7 +6,7 @@ gcloud container clusters create argo-cd  || true
 
 # Install MongoDB
 helm install mongodb --values mongo-custom-values.yaml bitnami/mongodb
-sleep 180
+sleep 150
 
 # Install RabbitMQ
 helm install rabbitmq bitnami/rabbitmq
@@ -93,7 +93,7 @@ PUBLIC_IP=$(kubectl get svc --namespace=ingress-nginx ingress-nginx-controller -
 
 echo -e "Copy and paste the public IP of the app - ${PUBLIC_IP} - in the DNS provider's config and try to curl the page:"
 echo -e "curl -I https://adam-demo.ddns.net"
-sleep 90
+sleep 30
 kubectl apply -f demo-crm-cronjob.yaml
 sleep 2
 
