@@ -2,7 +2,7 @@
 
 # Close and re-initate the Google Cloud cluster if applicable.
 printf "y\n" | gcloud container clusters delete argo-cd || true
-gcloud container clusters create adam-cluster || true
+gcloud container clusters create argo-cd  || true
 
 # Install MongoDB
 helm install mongodb --values mongo-custom-values.yaml bitnami/mongodb
