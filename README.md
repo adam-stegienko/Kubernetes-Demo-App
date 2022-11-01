@@ -1,6 +1,6 @@
-# Demo CRM Adam Project
+# Kubernetes Demo App
 
-## IMPORTANT CHANGE
+#### IMPORTANT CHANGE
 
 Now in the new version of the app you can run the whole app from the scratch using just one command:
 
