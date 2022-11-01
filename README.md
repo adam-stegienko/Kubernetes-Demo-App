@@ -6,8 +6,6 @@ Now in the new version of the app you can run the whole app from the scratch usi
 
 `./app-init.sh`
 
-App should be accessed on the website: https://adam-demo.ddns.net/
-
 
 ## Instruction on how to run it
 
