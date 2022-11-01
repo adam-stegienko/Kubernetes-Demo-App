@@ -5,7 +5,7 @@ metadata:
 spec:
   acme:
     server: https://acme-v02.api.letsencrypt.org/directory
-    email: adam.stegienko1@gmail.com
+    email: adam@gmail.com
     privateKeySecretRef:
       name: letsencrypt-cluster-issuer-key
     solvers:

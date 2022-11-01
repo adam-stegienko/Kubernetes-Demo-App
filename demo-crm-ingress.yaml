@@ -8,10 +8,10 @@
   spec:
     tls:
     - hosts:
-      - adam-demo.ddns.net
+      - adam-democrm.myddns.me
       secretName: demo-crm-tls
     rules:
-      - host: adam-demo.ddns.net
+      - host: adam-democrm.myddns.me
         http:
           paths:
           - path: /
